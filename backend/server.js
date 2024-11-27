@@ -13,9 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.get('/health',(req,res)=>{console.log("abhishek was here")
-    res.status(200).json("abhishek was here");
-});
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
