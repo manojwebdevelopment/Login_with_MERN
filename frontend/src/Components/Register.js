@@ -19,11 +19,7 @@ const Register = () => {
         }
     };
 
-   async function handleclick(){
-        const help = await axios.get('http://localhost:5000/health');
-            console.log(help);
-            
-    };
+
 
     return (
         <>
@@ -35,7 +31,6 @@ const Register = () => {
             <button type="submit">Register</button>
             {message && <p>{message}</p>}
         </form>
-        <button onClick={handleclick}>Click Here</button>
         </>
     );
 };
