@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const manoj = require('../models/user');
+const userdata = require('../models/user');
 
 const router = express.Router();
 
@@ -9,11 +9,13 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        const newUser = new manoj({ username, email, password });
+        // console.log('Request Body:', req.body);
+        const newUser = new userdata({ username, email, password });
+        console.log(newUser);
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully!,manoj was here' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(201).json({ message: 'User registered successfully!',success: true });
+    } catch (err) {
+        res.status(500).json({ message: 'Internal Server Error',success: false });
     }
 });
 
@@ -21,7 +23,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email });
+        const user = await userdata.findOne({ email });
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
