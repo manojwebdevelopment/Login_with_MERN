@@ -23,17 +23,23 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await userdata.findOne({ email });
-        if (!user) return res.status(404).json({ error: 'User not found' });
+        console.log('Request body:', req.body); // Debugging
+
+        const user = await userdata.findOne({email});
+        console.log('User found:', user); // Debugging
+
+        if (!user) return res.status(404).json({ message: 'User not found!', success: false });
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) return res.status(400).json({ error: 'Invalid credentials' });
+        if (!isPasswordValid) return res.status(400).json({ message: 'Invalid credentials', success: false });
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ token, username: user.username });
+        const token = jwt.sign({ id: user._id ,email:user.email}, process.env.JWT_SECRET, { expiresIn: '24h' });
+        res.status(200).json({ token, username: user.username,email ,message:"login Successfully",success:true});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error:', error); // Debugging
+        res.status(500).json({ message: 'Internal server problem', success: false });
     }
 });
+
 
 module.exports = router;
