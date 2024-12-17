@@ -33,9 +33,9 @@ const Login = () => {
       if (success) {
         successhandle(message);
         localStorage.setItem("token", token);
-        localStorage.setItem("loginuser", username);
+        // localStorage.setItem("loginuser", username);
         setTimeout(() => {
-          navigate("/home");
+          navigate("/home",{ state:{username}});
         }, 1000);
       } else {
         errorhandle(message);
